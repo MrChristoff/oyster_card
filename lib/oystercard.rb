@@ -51,10 +51,10 @@ class OysterCard
   def journey_history_update
     @journey_history << @current_journey
   end
-
-  private
-  def deduct(value)
-    raise "do not have enough money" if @balance < value
-    @balance -= value
-  end
+  
+  private 
+    def deduct(value)
+      raise "do not have enough money" if @balance < value
+      @balance -= value
+    end
 end

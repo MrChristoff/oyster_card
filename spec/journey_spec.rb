@@ -45,4 +45,20 @@ describe Journey do
       expect(log.current_journey).to eq(@end_array)
     end
   end
+
+  describe '#fare' do
+    
+    before :each do
+      log.start_journey(@station)
+    end
+
+    it 'charges 6 if no touch in or out' do
+      expect(log.fare).to eq 6
+    end
+    
+    it 'charges minimum (1) for touch in and out' do
+      log.end_journey(@station2)
+      expect(log.fare).to eq 1
+    end
+  end
 end

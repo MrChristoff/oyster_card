@@ -22,5 +22,12 @@ class Journey
     @current_journey << station.zone
   end
 
+  def fare
+    if @current_journey.length < 4
+      6
+    else
+      1
+    end
+  end
 
 end
