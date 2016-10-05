@@ -16,4 +16,11 @@ class Journey
   def clear_current_journey
     @current_journey = []
   end
+
+  def end_journey(station)
+    @current_journey << station.name
+    @current_journey << station.zone
+  end
+
+
 end
