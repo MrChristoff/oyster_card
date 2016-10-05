@@ -9,10 +9,12 @@ describe OysterCard do
     @top_up_value = 5
     @max_top_up = 90
     @deduct_value = 1
+    allow(station).to receive(:in_journey).and_return(false)
+    allow(station).to receive(:in_journey).and_return(true)
   end
 
   it 'returns false for in_journey' do
-  expect(card.in_journey?).to eq false
+  expect(card.in_journey).to eq false
   end
 
   it 'touch_in raises an error if minimum fare not met' do
@@ -37,7 +39,7 @@ describe OysterCard do
     end
 
     it 'touch_in to change in_journey to true' do
-      expect{card.touch_in(station)}.to change{card.in_journey?}.from(false).to(true)
+      expect{card.touch_in(station)}.to change{card.in_journey}.from(false).to(true)
     end
 
     it "sets the exit station" do
@@ -54,7 +56,7 @@ describe OysterCard do
         card.touch_in(station)
       end
       it 'touch_out to change in_journey to false' do
-        expect{card.touch_out(station)}.to change{card.in_journey?}.from(true).to(false)
+        expect{card.touch_out(station)}.to change{card.in_journey}.from(true).to(false)
       end
 
       it "sets the entry station" do
@@ -72,6 +74,10 @@ describe OysterCard do
       it 'updates journey history with entry and exit stations' do
         card.touch_out(station)
         expect(card.journey_history).to eq([[station, station]])
+      end
+      
+      it 'sets the in_journey variable to true at touch in' do
+        expect(station.in_journey).to eq(true)
       end
     end
   end
