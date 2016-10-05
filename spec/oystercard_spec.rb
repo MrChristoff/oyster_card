@@ -19,11 +19,6 @@ describe OysterCard do
     expect{card.touch_in(station)}.to raise_error "insufficient funds to complete journey"
   end
 
-  # it 'changes the hash key to entry station' do
-  #   card.top_up(@top_up_value)
-  #   expect{card.touch_in("banana")}.to change{card.current_journey}.from(nil).to(["banana", nil])
-  # end
-
   context 'card is topped up' do
     before do
       card.top_up(@top_up_value)
