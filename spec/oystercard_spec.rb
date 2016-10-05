@@ -6,11 +6,13 @@ describe OysterCard do
   let (:station) {double :station}
 
   before do
-    @top_up_value = 5
+    @top_up_value = 10
     @max_top_up = 90
     @deduct_value = 1
     allow(station).to receive(:in_journey).and_return(false)
     allow(station).to receive(:in_journey).and_return(true)
+    allow(station).to receive(:name).and_return('wembley')
+    allow(station).to receive(:zone).and_return(4)
   end
 
   it 'returns false for in_journey' do
@@ -29,26 +31,13 @@ describe OysterCard do
     it 'adds top-up to balance' do
       expect(card.balance).to eq @top_up_value
     end
-
-    it 'deducts minimum fare from balance' do
-      expect{card.touch_out(station)}.to change{card.balance}.by( 0 - OysterCard::MINIMUM_FARE)
-    end
-
+    
     it 'raises an error if balance is more than 90' do
       expect {card.top_up(@max_top_up)}.to raise_error "balance cannot exceed #{OysterCard::MAX_LIMIT} pounds"
     end
 
     it 'touch_in to change in_journey to true' do
       expect{card.touch_in(station)}.to change{card.in_journey}.from(false).to(true)
-    end
-
-    it "sets the exit station" do
-      card.touch_out(station)
-      expect(card.exit_station).to eq station
-    end
-
-    it 'updates the journey history with entry station' do
-      expect{card.touch_in(station)}.to change{card.current_journey}.from([]).to([station])
     end
 
     context 'card has been topped up and touched in' do
@@ -59,23 +48,6 @@ describe OysterCard do
         expect{card.touch_out(station)}.to change{card.in_journey}.from(true).to(false)
       end
 
-      it "sets the entry station" do
-        expect(card.entry_station).to eq station
-      end
-
-      it 'sets the entry station to nil' do
-        expect{card.touch_out(station)}.to change{card.entry_station}.from(station).to(nil)
-      end
-
-      it 'updates the journey history with exit station' do
-        expect{card.touch_out(station)}.to change{card.current_journey}.from([station]).to([station, station])
-      end
-
-      it 'updates journey history with entry and exit stations' do
-        card.touch_out(station)
-        expect(card.journey_history).to eq([[station, station]])
-      end
-      
       it 'sets the in_journey variable to true at touch in' do
         expect(station.in_journey).to eq(true)
       end
