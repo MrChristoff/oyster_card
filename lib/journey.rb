@@ -5,12 +5,12 @@ class Journey
 
   def initialize
     @journey_history = []
+    @current_journey = []
   end
 
   def start_journey(station)
     clear_current_journey
-    @current_journey << station.name
-    @current_journey << station.zone
+    @current_journey << station
   end
 
   def clear_current_journey
@@ -18,8 +18,13 @@ class Journey
   end
 
   def end_journey(station)
-    @current_journey << station.name
-    @current_journey << station.zone
+    @current_journey << station
+    journey_history_update
+  end
+
+  def journey_history_update
+    @journey_history << @current_journey.dup
+    @journey_history
   end
 
   def fare

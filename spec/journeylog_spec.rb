@@ -8,5 +8,6 @@ describe JourneyLog do
     it "has a journey history Array" do
       expect(log.journey_history).to eq([])
     end
+  end
 
 end
