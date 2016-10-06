@@ -23,13 +23,7 @@ class Journey
 
   def end_journey(station)
     @current_journey << station
-    journey_history_update
     @complete = true
-  end
-
-  def journey_history_update
-    @journey_history << @current_journey.dup
-    @journey_history
   end
 
   def fare
