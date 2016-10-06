@@ -21,13 +21,13 @@ attr_reader :balance, :max_limit, :entry_station, :journey_history, :exit_statio
     @entry_station != nil
   end
 
-  def touch_in(name, zone)
+  def touch_in(entry_station)
     raise "insufficient funds to complete journey" if @balance < MINIMUM_FARE
     @entry_station = entry_station
     entry_record
   end
 
-  def touch_out(name, zone)
+  def touch_out(exit_station)
     deduct(MINIMUM_FARE)
     @exit_station = exit_station
     exit_record
@@ -41,6 +41,7 @@ attr_reader :balance, :max_limit, :entry_station, :journey_history, :exit_statio
   def exit_record
     @current_journey << @exit_station
     journey_history_update
+    @current_journey = []
   end
 
   def journey_history_update
