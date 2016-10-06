@@ -1,5 +1,6 @@
 require_relative 'journey'
 require_relative 'journey_log'
+require_relative 'fare_calc'
 
 class OysterCard
   MAX_LIMIT = 90
