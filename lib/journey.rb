@@ -1,15 +1,19 @@
 class Journey
-
+  FINE = 6
+  MINIMUM_FARE = 1
   attr_reader :journey_history,
               :current_journey
+              :complete
 
   def initialize
     @journey_history = []
     @current_journey = []
+    @complete = true
   end
 
   def start_journey(station)
     clear_current_journey
+    @complete = false
     @current_journey << station
   end
 
@@ -20,6 +24,7 @@ class Journey
   def end_journey(station)
     @current_journey << station
     journey_history_update
+    @complete = true
   end
 
   def journey_history_update
@@ -28,11 +33,11 @@ class Journey
   end
 
   def fare
-    if @current_journey.length < 4
-      6
-    else
-      1
-    end
+     MINIMUM_FARE
+  end
+
+  def fine
+    FINE
   end
 
 end

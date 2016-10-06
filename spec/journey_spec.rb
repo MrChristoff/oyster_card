@@ -2,7 +2,7 @@ require 'journey'
 
 describe Journey do
 
-  subject(:log) { described_class.new }
+  subject(:journey) { described_class.new }
   let(:station) {double :station}
 
   # before :each do
@@ -16,21 +16,29 @@ describe Journey do
   # end
 
     it "has a journey history Array" do
-      expect(log.journey_history).to eq([])
+      expect(journey.journey_history).to eq([])
     end
 
     it "appends start station" do
-      expect(log.start_journey(station)).to eq [station]
+      expect(journey.start_journey(station)).to eq [station]
     end
 
   it "appends exit station location" do
-    log.start_journey(station)
-    log.end_journey(station)
-    expect(log.current_journey).to eq [station, station]
+    journey.start_journey(station)
+    journey.end_journey(station)
+    expect(journey.current_journey).to eq [station, station]
   end
 
   it 'clears current journey array' do
-    log.clear_current_journey
-    expect(log.current_journey).to eq([])
+    journey.clear_current_journey
+    expect(journey.current_journey).to eq([])
+  end
+
+  it 'returns penalty fare if journey is incomplete' do
+    expect(journey.fine).to eq Journey::FINE
+  end
+
+  it 'returns normal fare when journey is complete' do
+      expect(journey.fare).to eq Journey::MINIMUM_FARE
   end
 end
