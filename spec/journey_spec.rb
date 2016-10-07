@@ -34,11 +34,11 @@ describe Journey do
     expect(journey.current_journey).to eq([])
   end
 
-  it 'returns penalty fare if journey is incomplete' do
+  it 'has a fine value' do
     expect(journey.fine).to eq Journey::FINE
   end
 
-  it 'returns normal fare when journey is complete' do
+  it 'has a minimum fare' do
       expect(journey.fare).to eq Journey::MINIMUM_FARE
   end
 end

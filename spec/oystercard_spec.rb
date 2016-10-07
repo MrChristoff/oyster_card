@@ -16,6 +16,10 @@ describe OysterCard do
   #   allow(station).to receive(:zone).and_return(4)
   # end
 
+  it "has a journey history" do
+    expect(card).to respond_to(:journey_history)
+  end
+
 
   context 'card is topped up' do
     before do
@@ -56,6 +60,18 @@ describe OysterCard do
       card.touch_in(station1)
       expect(card.in_journey).to eq true
     end
+
+    # we expect touch_in twice to log and deduct penalty from previous journey.
+    # and log current journey as normal
+
+    it "has the second station after two touch_in events" do
+      card.top_up(OysterCard::MINIMUM_FARE)
+      card.touch_in(station1)
+      card.touch_in(station2)
+      expect(card.journey_history.last.current_journey).to eq [station1]
+    end
+
+
   end
 
   context " #touch_out" do
@@ -64,7 +80,20 @@ describe OysterCard do
       card.top_up(OysterCard::MINIMUM_FARE)
       card.touch_in(station1)
       card.touch_out(station2)
-      expect(card.journey.current_journey).to eq [station1, station2]      
+      expect(card.journey.current_journey).to eq [station1, station2]
+    end
+
+    it " in journey is true" do
+      card.top_up(OysterCard::MINIMUM_FARE)
+      card.touch_in(station1)
+      card.touch_out(station2)
+      expect(card.in_journey).to eq false
+    end
+    it "journey history is updated after touch_in, touch_out" do
+      card.top_up(OysterCard::MINIMUM_FARE)
+      card.touch_in(station1)
+      card.touch_out(station2)
+      expect(card.journey_history.last).to eq (card.journey)
     end
 
   end

@@ -6,7 +6,6 @@ class Journey
               :complete
 
   def initialize
-    @journey_history = []
     @current_journey = []
     @complete = true
   end
