@@ -71,6 +71,14 @@ describe OysterCard do
       expect(card.journey_history.last.current_journey).to eq [station1]
     end
 
+    it " records normal journey after two touch_in events" do
+      card.top_up(OysterCard::MINIMUM_FARE)
+      card.touch_in(station1)
+      card.touch_in(station2)
+      card.touch_in(station1)
+      card.touch_out(station2)
+      expect(card.journey_history.last.current_journey).to eq [station1, station2]
+    end
 
   end
 
@@ -89,8 +97,23 @@ describe OysterCard do
       card.touch_out(station2)
       expect(card.in_journey).to eq false
     end
+
     it "journey history is updated after touch_in, touch_out" do
       card.top_up(OysterCard::MINIMUM_FARE)
+      card.touch_in(station1)
+      card.touch_out(station2)
+      expect(card.journey_history.last).to eq (card.journey)
+    end
+
+    it "journey history is updated after touch_out without touch_in" do
+      card.top_up(OysterCard::MINIMUM_FARE)
+      card.touch_out(station1)
+      expect(card.journey_history.last).to eq (card.journey)
+    end
+
+    it "normal journey history is updated after touch_out without touch_in" do
+      card.top_up(OysterCard::MINIMUM_FARE)
+      card.touch_out(station1)
       card.touch_in(station1)
       card.touch_out(station2)
       expect(card.journey_history.last).to eq (card.journey)

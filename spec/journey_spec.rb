@@ -15,7 +15,7 @@ describe Journey do
   #   allow(@station2).to receive(:zone).and_return(4)
   # end
 
-    it "has a journey history Array" do
+    xit "has a journey history Array" do
       expect(journey.journey_history).to eq([])
     end
 

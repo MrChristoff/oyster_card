@@ -27,14 +27,14 @@ attr_reader :balance,
 
   def touch_in(entry_station)
     raise "insufficient funds to complete journey" if @balance < MINIMUM_FARE
-    save_journey if @in_journey == true 
+    save_journey if @in_journey == true
     @journey = Journey.new
-    # @in_journey == true ? deduct(journey.fine) : deduct(journey.fare)
     @journey.start_journey(entry_station)
     @in_journey = true
   end
 
   def touch_out(exit_station)
+    touch_out_journey
     @journey.end_journey(exit_station)
     @in_journey = false
     save_journey
@@ -42,6 +42,10 @@ attr_reader :balance,
 
   def save_journey
     @journey_history << @journey
+  end
+
+  def touch_out_journey
+    @journey = Journey.new if @in_journey == false
   end
 
   private
